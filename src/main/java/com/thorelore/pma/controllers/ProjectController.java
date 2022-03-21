@@ -43,7 +43,7 @@ public class ProjectController {
 		proRepo.save(project);
 		
 		for(Employee emp : empRepo.findAllById(employees)) {
-			emp.setProject(project);
+			//emp.setProject(project);
 			empRepo.save(emp);
 		}
 		

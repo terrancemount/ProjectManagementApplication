@@ -1,5 +1,6 @@
 package com.thorelore.pma.entities;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -9,7 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Employee {
@@ -22,9 +24,12 @@ public class Employee {
 	private String lastName;
 	private String email;
 	
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
-	@JoinColumn(name="project_id") //name of foriegn key column
-	private Project project; //must be the same as mapped by in the project entity
+	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+	@JoinTable(name="project_employee",
+		joinColumns=@JoinColumn(name="employee_id"),
+		inverseJoinColumns=@JoinColumn(name="project_id"))
+	
+	private List<Project> projects; //must be the same as mapped by in the project entity
 	
 	public Employee() {
 		
@@ -73,12 +78,12 @@ public class Employee {
 		this.email = email;
 	}
 
-	public Project getProject() {
-		return project;
+	public List<Project> getProjects() {
+		return projects;
 	}
 
-	public void setProject(Project project) {
-		this.project = project;
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
 	}
 
 	@Override
